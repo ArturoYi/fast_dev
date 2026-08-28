@@ -46,7 +46,7 @@ Future<PackageConfig?> _loadRuntimePackageConfig() async {
     return null;
   }
   try {
-    return loadPackageConfigUri(uri);
+    return await loadPackageConfigUri(uri);
   } on Object {
     return null;
   }
