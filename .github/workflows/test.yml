@@ -38,7 +38,9 @@ jobs:
           sdk: stable
 
       - name: Install dependencies
-        run: dart pub get
+        # example/ 是 Flutter 应用；默认 dart pub get 会连带解析它，
+        # 纯 Dart runner 上没有 Flutter SDK，会直接失败。
+        run: dart pub get --no-example
 
       - name: Analyze
         run: dart analyze

@@ -21,7 +21,8 @@ npm run docs:preview
 
 ## 上线
 
-GitHub Pages 用 Actions。推 `main` 上的 `docs/` 就会发。  
+仓库 [Settings → Pages](https://github.com/ArturoYi/fast_dev/settings/pages) 的 Source 选 **GitHub Actions**，否则 `deploy-pages` 会 404。  
+之后推 `main` 上的 `docs/`（或手动跑 `Deploy documentation`）就会发。  
 <https://arturoyi.github.io/fast_dev/>
 
 中文在 `/`，英文在 `/en/`。搜索是本地 MiniSearch。
