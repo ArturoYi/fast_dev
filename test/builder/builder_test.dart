@@ -1,4 +1,4 @@
-import 'package:fast_dev_runner/src/compose.dart';
+import 'package:fast_dev/src/builder/compose.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -59,9 +59,6 @@ generate:
       graphPaths: const ['assets/logo.svg'],
       outputOverride: outputDirFromBuilderConfig({'output': 'lib/generated'}),
     );
-    expect(
-      result.manifest.outputs.single.path,
-      'lib/generated/assets.gen.dart',
-    );
+    expect(result.manifest.outputs.single.path, 'lib/generated/assets.gen.dart');
   });
 }

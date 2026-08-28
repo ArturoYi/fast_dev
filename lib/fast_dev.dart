@@ -1,6 +1,7 @@
 /// Fast Dev：只放在 `dev_dependencies` 的 Flutter 开发期工具。
 ///
-/// 当前实现 assets 代码生成。fonts / colors / import 整理的扩展方式见
+/// 当前实现 assets 代码生成。CLI（`dart run fast_dev`）和 `build_runner`
+/// Builder 在同一个包里。fonts / colors / import 整理的扩展方式见
 /// [Generator] 与仓库根目录 `ROADMAP.md`。
 library;
 

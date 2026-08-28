@@ -24,7 +24,7 @@ outline: [2, 3]
    - 跑的命令（`dart run fast_dev gen` 或 `build_runner`）
 
 4. **环境**
-   - Fast Dev / runner 版本，或 git commit
+   - Fast Dev 版本，或 git commit
    - Dart / Flutter 版本
    - 系统
    - CLI 还是 `build_runner`

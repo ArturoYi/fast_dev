@@ -21,15 +21,6 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        package:
-          - .
-          - fast_dev_runner
-    defaults:
-      run:
-        working-directory: ${{ matrix.package }}
     steps:
       - uses: actions/checkout@v5
 

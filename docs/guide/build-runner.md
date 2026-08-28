@@ -5,20 +5,19 @@ outline: [2, 3]
 
 # build_runner
 
-`fast_dev_runner` 接到 `build_runner`。结果和 `dart run fast_dev gen` 一样。目录还是看 `fast_dev_config.yaml` 的 `generate.output`。
+`fast_dev` 自带 Builder。结果和 `dart run fast_dev gen` 一样。目录还是看 `fast_dev_config.yaml` 的 `generate.output`。
 
-只用 CLI 的话，可以不装 runner。`fast_dev` 不依赖 `package:build`。
+只用 CLI 时不必装 `build_runner`。已经在用 `build_runner` 时，加 `fast_dev` 就会一起跑。
 
 ## 安装
 
 ```yaml
 dev_dependencies:
-  fast_dev: ^0.0.1
-  fast_dev_runner: ^0.0.1
-  build_runner: ^2.4.0
+  fast_dev: ^0.0.1-beta.1
+  build_runner: ^2.7.2
 ```
 
-项目里已经在用 `build_runner` 时，把上面三个加进现有的 `dev_dependencies` 就行，不要另开一套。
+项目里已经在用 `build_runner` 时，把 `fast_dev` 加进现有的 `dev_dependencies` 就行，不要另开一套。
 
 ## 命令
 
@@ -26,13 +25,11 @@ dev_dependencies:
 
 ```sh
 # 生成一次
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 
 # 盯着改动，改 dart、资源或配置都会重跑
-dart run build_runner watch --delete-conflicting-outputs
+dart run build_runner watch
 ```
-
-`--delete-conflicting-outputs` 建议带上。第一次和别的生成器一起跑时，旧输出对不上，不带这个会停下来问你。
 
 只想生成资源、不走 `build_runner`：
 
@@ -44,20 +41,30 @@ dart run fast_dev gen
 
 ```sh
 # 只重跑 lib 下的生成
-dart run build_runner build --delete-conflicting-outputs --build-filter="lib/**"
+dart run build_runner build --build-filter="lib/**"
 
 # watch 同样可以加 filter，但会漏掉 assets/ 和配置，一般不要这样盯资源
-dart run build_runner watch --delete-conflicting-outputs --build-filter="lib/**"
+dart run build_runner watch --build-filter="lib/**"
 ```
 
 同时开两个 `watch` 没必要，也容易抢文件。一个终端里一条 `watch` 就够。
+
+项目里已有其它 Builder、又不想跑 Fast Dev 时，在应用的 `build.yaml` 里关掉：
+
+```yaml
+targets:
+  $default:
+    builders:
+      fast_dev:fast_dev:
+        enabled: false
+```
 
 ## 和其它生成器一起
 
 和项目里其它走 `build_runner` 的包一样：并列写在 `dev_dependencies`，共用这一条命令。
 
 ```sh
-dart run build_runner watch --delete-conflicting-outputs
+dart run build_runner watch
 ```
 
 改 `lib/` 里的源码，该出的生成文件会出。加图片或改 `fast_dev_config.yaml`，会出 `assets.gen.dart`。不用为 Fast Dev 再开一个进程。
@@ -89,7 +96,7 @@ targets:
 targets:
   $default:
     builders:
-      fast_dev_runner:fast_dev:
+      fast_dev:fast_dev:
         options:
           output: lib/generated/
 ```

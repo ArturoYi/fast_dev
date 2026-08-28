@@ -5,24 +5,11 @@ outline: [2, 3]
 
 # 定位
 
-Fast Dev（`fast_dev`）是开发期工具，写在 `dev_dependencies`。
+Fast Dev（`fast_dev`）是开发期工具，写在 `dev_dependencies`。一个包，两套入口：`dart run fast_dev gen` 和 `build_runner`，结果一样。只用 CLI 不必装 `build_runner`。
 
 它做一件事：读 `pubspec.yaml` 里的 `flutter.assets`，生成类型安全的 Dart 路径。生成文件进仓库，工具本身不进用户包。
 
-## 和 Fast Package
-
-[Fast Package](https://github.com/ArturoYi/fast_package) 是运行时的包，进 `dependencies`。
-
-这边只在开发机和 CI 上跑。
-
-| | Fast Package | Fast Dev |
-| --- | --- | --- |
-| 放哪 | `dependencies` | `dev_dependencies` |
-| 什么时候 | 应用跑起来之后 | 开发机 / CI |
-| 做什么 | 工具方法、扩展、UI | 资源路径代码生成 |
-| 进不进用户包 | 进 | 不进 |
-
-可以一起用。
+如果希望一些业务相关的能力，可以用 [Fast Package](https://github.com/ArturoYi/fast_package)。
 
 ## 怎么划分
 

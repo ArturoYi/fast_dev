@@ -18,8 +18,7 @@ Issue、PR、文档都可以。觉得有用的话，[点个 Star](https://github
 
 | 路径 | |
 | --- | --- |
-| `/` | CLI 和生成核心（`fast_dev`） |
-| `fast_dev_runner/` | `build_runner` |
+| `/` | CLI、生成核心、`build_runner` Builder |
 | `example/` | 小例子 |
 | `docs/` | 文档 |
 
@@ -27,8 +26,6 @@ Issue、PR、文档都可以。觉得有用的话，[点个 Star](https://github
 dart pub get
 dart test
 dart analyze
-
-cd fast_dev_runner && dart pub get && dart test && cd ..
 
 cd docs && npm ci && npm run docs:dev
 ```

@@ -27,5 +27,5 @@ features:
   - title: Your config
     details: Put a fast_dev_config.yaml at the package root. Class name, style, and output stay in the repo.
   - title: CLI / build_runner
-    details: dart run fast_dev gen, or build_runner. Same result either way.
+    details: One package, two entry points, same result: dart run fast_dev gen, or build_runner.
 ---

@@ -113,10 +113,7 @@ Future<String?> _readPackageFile({
   return file.readAsStringSync();
 }
 
-Future<void> _writeManifest(
-  BuildStep buildStep,
-  FastDevManifest manifest,
-) {
+Future<void> _writeManifest(BuildStep buildStep, FastDevManifest manifest) {
   return buildStep.writeAsString(
     AssetId(buildStep.inputId.package, kFastDevManifestPath),
     manifest.toJsonString(),

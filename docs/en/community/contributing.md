@@ -18,8 +18,7 @@ Issues, PRs, and docs are welcome. A [Star](https://github.com/ArturoYi/fast_dev
 
 | Path | |
 | --- | --- |
-| `/` | CLI and core (`fast_dev`) |
-| `fast_dev_runner/` | `build_runner` |
+| `/` | CLI, core, `build_runner` builder |
 | `example/` | Small app |
 | `docs/` | Docs |
 
@@ -27,8 +26,6 @@ Issues, PRs, and docs are welcome. A [Star](https://github.com/ArturoYi/fast_dev
 dart pub get
 dart test
 dart analyze
-
-cd fast_dev_runner && dart pub get && dart test && cd ..
 
 cd docs && npm ci && npm run docs:dev
 ```

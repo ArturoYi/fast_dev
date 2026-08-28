@@ -6,3 +6,6 @@ contact_links:
   - name: English docs
     url: https://arturoyi.github.io/fast_dev/en/
     about: Read the docs
+  - name: pub.dev
+    url: https://pub.dev/packages/fast_dev
+    about: 包页面

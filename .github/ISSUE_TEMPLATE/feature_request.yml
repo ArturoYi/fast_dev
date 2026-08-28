@@ -11,7 +11,7 @@ body:
     id: problem
     attributes:
       label: 要解决什么
-      description: 为什么是开发期的事，而不是 Fast Package 该收的。
+      description: 要补什么能力。业务相关的可以看 Fast Package。
     validations:
       required: true
   - type: textarea

@@ -8,8 +8,8 @@
 
 | 阶段 | 状态 | 内容 |
 | --- | --- | --- |
-| **v0.0.x** | 进行中 | assets 生成；CLI（`config` / `gen`）；`build_runner`；文档站 |
-| **v0.1** | 计划 | 稳定现有 API；补测试与示例；准备发布 pub.dev |
+| **v0.0.x** | 进行中 | assets 生成；CLI（`config` / `gen`）；`build_runner`（同一个 `fast_dev` 包）；文档站 |
+| **v0.1** | 计划 | 稳定现有 API；补测试与示例 |
 | **v0.2** | 计划 | fonts 生成器 |
 | **v0.3** | 计划 | colors 生成器 |
 | **v0.4** | 计划 | `fast_dev imports` |
@@ -24,7 +24,7 @@
 3. 把配置键从预留集合挪到 known 集合，并补上解析：
    - 根级：`kReservedRootConfigKeys` → `kKnownRootConfigKeys`
    - `generate` 段：`kReservedGenerateConfigKeys` → `kKnownGenerateConfigKeys`
-4. 要读盘的话，在 `runGenerate` / `composeGenerate` 里准备好，放进 `GeneratorContext`。
+4. 要读盘的话，在 `runGenerate` / `composeGenerate`（`lib/src/builder/compose.dart`）里准备好，放进 `GeneratorContext`。
 5. 新 CLI 加在 `FastDevCommandRunner.addCommand` 旁边。
 
 预留键先写也行，只会告警。
@@ -56,4 +56,4 @@
 - `flutter.assets` 的 **flavors**：v1 当普通资源并告警；后续可按 flavor 拆生成文件。
 - **transformers**：目前忽略并告警。
 - 生成器之间的输入协调（例如 colors 排除名单）优先做成 `Generator` 上的可选钩子，而不是让 assets 生成器认识其它生成器。
-- 不在表里的想法先开 Issue。确认它是开发期的事，不是 [Fast Package](https://github.com/ArturoYi/fast_package) 该收的。
+- 不在表里的想法先开 Issue。如果希望一些业务相关的能力，可以用 [Fast Package](https://github.com/ArturoYi/fast_package)。

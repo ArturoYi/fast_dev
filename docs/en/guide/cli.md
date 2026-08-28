@@ -70,3 +70,5 @@ dart run fast_dev gen
 Prints written / skipped / warnings. Output dir is `generate.output`, default `lib/gen/fast_dev/`.
 
 Empty `flutter.assets`, or `assets.enabled: false`, skips and says why.
+
+If the project already uses `build_runner`, you can skip the CLI. See [build_runner](./build-runner.md).

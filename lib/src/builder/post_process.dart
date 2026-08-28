@@ -24,7 +24,7 @@ final class FastDevPostProcessBuilder extends PostProcessBuilder {
       await buildStep.readInputAsString(),
     );
     if (manifest.packageRoot.isEmpty) {
-      log.warning('fast_dev_runner：无法解析包根目录，跳过写出生成文件。');
+      log.warning('fast_dev：无法解析包根目录，跳过写出生成文件。');
       return;
     }
     materializeManifest(manifest);
@@ -60,7 +60,7 @@ void materializeManifest(FastDevManifest manifest) {
     }
     final absolute = p.normalize(p.join(root, output.path));
     if (!_isWithinPackage(root, absolute)) {
-      log.warning('fast_dev_runner：拒绝写出包外路径 `${output.path}`');
+      log.warning('fast_dev：拒绝写出包外路径 `${output.path}`');
       continue;
     }
     final file = File(absolute);

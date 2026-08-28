@@ -35,31 +35,32 @@
 
 ## 是什么
 
-根据 `flutter.assets` 生成类型安全的资源路径。生成文件进仓库，工具留在开发机和 CI。
+根据 `flutter.assets` 生成类型安全的资源路径。一个包，CLI 和 `build_runner` 都能跑。生成文件进仓库，工具留在开发机和 CI。
 
-[Fast Package](https://github.com/ArturoYi/fast_package) 是运行时的包。这边是开发期。
-
-| | Fast Package | Fast Dev |
-| --- | --- | --- |
-| 放哪 | `dependencies` | `dev_dependencies` |
-| 什么时候 | 应用跑起来之后 | 开发机 / CI |
-| 做什么 | 工具方法、扩展、UI | 资源路径代码生成 |
-| 进不进用户包 | 进 | 不进 |
+如果希望一些业务相关的能力，可以用 [Fast Package](https://github.com/ArturoYi/fast_package)。
 
 ---
 
 ## 用法
 
+```sh
+dart pub add --dev fast_dev
+dart pub add --dev build_runner   # 只用 CLI 可以不加
+```
+
+或手写：
+
 ```yaml
 dev_dependencies:
-  fast_dev: ^0.0.1
-  fast_dev_runner: ^0.0.1
-  build_runner: ^2.4.0
+  fast_dev: ^0.0.1-beta.1
+  build_runner: ^2.7.2
 
 flutter:
   assets:
     - assets/
 ```
+
+只用 CLI 时不必写 `build_runner`。已经在用 `build_runner` 时加上 `fast_dev` 就会一起生成。
 
 建议在项目根自己建一份 `fast_dev_config.yaml`，和 `pubspec.yaml` 同级。没有也能跑，有的话类名、风格、输出目录都在仓库里。
 
@@ -81,6 +82,7 @@ dart run fast_dev help
 dart run fast_dev help gen
 dart run fast_dev config
 dart run fast_dev gen
+dart run build_runner watch   # 已经在用 build_runner 时
 ```
 
 ```dart

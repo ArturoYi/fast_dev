@@ -11,11 +11,9 @@ dependencies:
     sdk: flutter
 
 dev_dependencies:
-  build_runner: ^2.4.0
+  build_runner: ^2.7.2
   fast_dev:
     path: ../
-  fast_dev_runner:
-    path: ../fast_dev_runner
   flutter_lints: ^6.0.0
 
 flutter:

@@ -64,6 +64,7 @@ const sidebarZhGroups = [
       { text: 'CLI', link: '/guide/cli' },
       { text: '配置', link: '/guide/configuration' },
       { text: 'build_runner', link: '/guide/build-runner' },
+      { text: '计划', link: '/guide/roadmap' },
     ],
   },
   {
@@ -89,6 +90,7 @@ const sidebarEnGroups = [
       { text: 'CLI', link: '/en/guide/cli' },
       { text: 'Configuration', link: '/en/guide/configuration' },
       { text: 'build_runner', link: '/en/guide/build-runner' },
+      { text: 'Roadmap', link: '/en/guide/roadmap' },
     ],
   },
   {
@@ -115,7 +117,7 @@ const docSidebarPrefixesEn = ['/en/guide/', '/en/features/', '/en/community/']
 export default defineConfig({
   base: siteBase,
   title: 'Fast Dev',
-  description: '开发期用的 Flutter 工具',
+  description: '开发期用的 Flutter 工具：CLI 和 build_runner 生成类型安全的资源路径',
   lastUpdated: true,
   head: sharedHead,
   srcExclude: ['README.md'],
@@ -137,6 +139,7 @@ export default defineConfig({
             activeMatch: '^/(guide|features|community)/',
           },
           { text: 'GitHub', link: githubUrl },
+          { text: 'pub.dev', link: 'https://pub.dev/packages/fast_dev' },
         ],
         sidebar: sidebarForPrefixes(docSidebarPrefixesZh, sidebarZhGroups),
         outline: {
@@ -160,6 +163,7 @@ export default defineConfig({
     en: {
       label: 'English',
       lang: 'en-US',
+      description: 'Flutter dev-time tool: typed asset paths via CLI or build_runner',
       link: '/en/',
       themeConfig: {
         logo: sharedLogo,
@@ -171,6 +175,7 @@ export default defineConfig({
             activeMatch: '^/en/(guide|features|community)/',
           },
           { text: 'GitHub', link: githubUrl },
+          { text: 'pub.dev', link: 'https://pub.dev/packages/fast_dev' },
         ],
         sidebar: sidebarForPrefixes(docSidebarPrefixesEn, sidebarEnGroups),
         outline: {

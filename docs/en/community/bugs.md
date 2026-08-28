@@ -24,7 +24,7 @@ The **[form](https://github.com/ArturoYi/fast_dev/issues/new?template=bug_report
    - The command (`dart run fast_dev gen` or `build_runner`)
 
 4. **Environment**
-   - Fast Dev / runner version, or a commit
+   - Fast Dev version, or a commit
    - Dart / Flutter version
    - OS
    - CLI or `build_runner`

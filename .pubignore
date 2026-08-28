@@ -1,0 +1,24 @@
+# VitePress 站点；pub 约定的文档目录是 doc/
+docs/
+
+pubspec.lock
+**/build/
+coverage/
+*.class
+*.log
+*.pyc
+*.swp
+*.iml
+*.ipr
+*.iws
+migrate_working_dir/
+
+# example 只保留 Dart / 资源，不带平台工程
+example/android/
+example/ios/
+example/linux/
+example/macos/
+example/windows/
+example/web/
+example/.metadata
+example/example/

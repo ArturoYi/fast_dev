@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:fast_dev_runner/src/manifest.dart';
-import 'package:fast_dev_runner/src/post_process.dart';
+import 'package:fast_dev/src/builder/manifest.dart';
+import 'package:fast_dev/src/builder/post_process.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
@@ -9,7 +9,7 @@ void main() {
   late Directory temp;
 
   setUp(() {
-    temp = Directory.systemTemp.createTempSync('fast_dev_runner_');
+    temp = Directory.systemTemp.createTempSync('fast_dev_builder_');
   });
 
   tearDown(() {

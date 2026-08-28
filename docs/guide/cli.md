@@ -70,3 +70,5 @@ dart run fast_dev gen
 会打印已生成 / 已跳过 / 警告。输出目录看 `generate.output`，默认 `lib/gen/fast_dev/`。
 
 `flutter.assets` 为空、或 `assets.enabled: false` 时，会跳过并说明原因。
+
+已经在用 `build_runner` 时，不必再跑 CLI，见 [build_runner](./build-runner.md)。

@@ -14,12 +14,20 @@ outline: [2, 3]
 
 `dev_dependencies` only. No runtime API.
 
+```sh
+dart pub add --dev fast_dev
+dart pub add --dev build_runner   # skip if CLI-only
+```
+
+Or by hand:
+
 ```yaml
 dev_dependencies:
-  fast_dev: ^0.0.1
-  fast_dev_runner: ^0.0.1
-  build_runner: ^2.4.0
+  fast_dev: ^0.0.1-beta.1
+  build_runner: ^2.7.2
 ```
+
+Skip `build_runner` if you only run `dart run fast_dev gen`. If the project already uses `build_runner`, adding `fast_dev` is enough.
 
 Assets still go in `pubspec.yaml`. Directories are expanded recursively, so one line is usually enough:
 
@@ -79,7 +87,7 @@ generate:
         fallback: file
 ```
 
-Every field is in [Configuration](./configuration.md). After you write the file:
+How to create and load the file: [Configuration](./configuration.md). Field details: [Assets](/en/features/assets#config). After you write the file:
 
 ```sh
 dart run fast_dev config
@@ -96,7 +104,7 @@ Default output is `lib/gen/fast_dev/assets.gen.dart`.
 If the project already uses `build_runner`, one watch is enough. It runs with the other builders:
 
 ```sh
-dart run build_runner watch --delete-conflicting-outputs
+dart run build_runner watch
 ```
 
 How to sit next to them, and `build.yaml`: [build_runner](./build-runner.md).

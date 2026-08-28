@@ -1,6 +1,16 @@
 name: fast_dev
-description: "只放在 dev_dependencies 的 Flutter 开发期工具：资源代码生成，后续还将覆盖字体、颜色与 import 整理。"
-version: 0.0.1
+description: "写在 dev_dependencies 的 Flutter 开发期工具：根据 flutter.assets 生成类型安全路径。CLI 和 build_runner 同一套结果。"
+version: 0.0.1-beta.1
+homepage: https://arturoyi.github.io/fast_dev/
+repository: https://github.com/ArturoYi/fast_dev
+issue_tracker: https://github.com/ArturoYi/fast_dev/issues
+documentation: https://arturoyi.github.io/fast_dev/
+topics:
+  - flutter
+  - cli
+  - assets
+  - code-generation
+  - build-runner
 
 environment:
   sdk: ^3.12.2
@@ -11,9 +21,13 @@ executables:
 
 dependencies:
   args: ^2.7.0
+  # 4.0.8+ 需要 analyzer 13，和 dart_style <3.1.9 / Flutter 钉死的 meta 冲突。
+  build: ">=4.0.4 <4.0.8"
   # 3.1.9+ 需要 analyzer 13 / meta ^1.18.3，和当前 Flutter SDK 钉死的 meta 1.18.0
   # 冲突，example 这个 Flutter 应用就解析不了 path 依赖。
   dart_style: ">=3.1.0 <3.1.9"
+  glob: ^2.1.3
+  package_config: ^2.1.0
   path: ^1.9.1
   yaml: ^3.1.3
 

@@ -5,20 +5,19 @@ outline: [2, 3]
 
 # build_runner
 
-`fast_dev_runner` plugs into `build_runner`. Same output as `dart run fast_dev gen`. Directory still comes from `generate.output`.
+`fast_dev` includes the builder. Same output as `dart run fast_dev gen`. Directory still comes from `generate.output`.
 
-CLI-only projects can skip the runner. `fast_dev` does not depend on `package:build`.
+CLI-only projects can skip `build_runner`. If the project already uses `build_runner`, adding `fast_dev` is enough.
 
 ## Install
 
 ```yaml
 dev_dependencies:
-  fast_dev: ^0.0.1
-  fast_dev_runner: ^0.0.1
-  build_runner: ^2.4.0
+  fast_dev: ^0.0.1-beta.1
+  build_runner: ^2.7.2
 ```
 
-If the project already uses `build_runner`, add these next to the existing `dev_dependencies`. Do not add a second `build_runner`.
+If the project already uses `build_runner`, add `fast_dev` next to the existing `dev_dependencies`. Do not add a second `build_runner`.
 
 ## Commands
 
@@ -26,13 +25,11 @@ One command runs **every** enabled builder in the package. Asset codegen and oth
 
 ```sh
 # once
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 
 # keep running — dart, assets, or config changes rebuild
-dart run build_runner watch --delete-conflicting-outputs
+dart run build_runner watch
 ```
-
-Keep `--delete-conflicting-outputs`. The first run next to other generators often conflicts with old outputs.
 
 Assets only, no `build_runner`:
 
@@ -44,20 +41,30 @@ Rebuild one kind of output (unusual; daily watch does not need this):
 
 ```sh
 # only rebuild outputs under lib/
-dart run build_runner build --delete-conflicting-outputs --build-filter="lib/**"
+dart run build_runner build --build-filter="lib/**"
 
 # the same filter on watch skips assets/ and the config file
-dart run build_runner watch --delete-conflicting-outputs --build-filter="lib/**"
+dart run build_runner watch --build-filter="lib/**"
 ```
 
 Do not start two `watch` processes. One terminal, one command.
+
+To keep other builders and skip Fast Dev:
+
+```yaml
+targets:
+  $default:
+    builders:
+      fast_dev:fast_dev:
+        enabled: false
+```
 
 ## With other builders
 
 Same as any other `build_runner` package: list it in `dev_dependencies`, share this command.
 
 ```sh
-dart run build_runner watch --delete-conflicting-outputs
+dart run build_runner watch
 ```
 
 Edits under `lib/` rebuild those generators. New images or a change to `fast_dev_config.yaml` rebuild `assets.gen.dart`. No extra process for Fast Dev.
@@ -89,7 +96,7 @@ Prefer `generate.output` in the config file. To change it only for `build_runner
 targets:
   $default:
     builders:
-      fast_dev_runner:fast_dev:
+      fast_dev:fast_dev:
         options:
           output: lib/generated/
 ```

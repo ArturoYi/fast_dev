@@ -5,24 +5,11 @@ outline: [2, 3]
 
 # About
 
-Fast Dev (`fast_dev`) is a dev-time tool. It goes in `dev_dependencies`.
+Fast Dev (`fast_dev`) is a dev-time tool. It goes in `dev_dependencies`. One package, two entry points: `dart run fast_dev gen` and `build_runner`, same output. CLI-only projects can skip `build_runner`.
 
 It reads `flutter.assets` from `pubspec.yaml` and writes typed Dart paths. Generated files are committed. The tool is not.
 
-## Fast Package
-
-[Fast Package](https://github.com/ArturoYi/fast_package) is a runtime package. It goes in `dependencies`.
-
-This one runs on your machine and in CI.
-
-| | Fast Package | Fast Dev |
-| --- | --- | --- |
-| Where | `dependencies` | `dev_dependencies` |
-| When | App runtime | Dev machine / CI |
-| What | Utils, extensions, UI | Typed asset paths |
-| Ships with the app | Yes | No |
-
-You can use both.
+If you want business-related helpers, you can use [Fast Package](https://github.com/ArturoYi/fast_package).
 
 ## Split
 

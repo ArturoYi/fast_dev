@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: Fast Dev
-  text: 开发期用的 Flutter 工具
-  tagline: 写在 dev_dependencies。根据 flutter.assets 生成类型安全的资源路径。
+  text: 开发用的 Flutter 工具
+  tagline: 开发期工具，不打包进业务包。
   image:
     src: /logo.svg
     alt: Fast Dev Logo
@@ -27,5 +27,5 @@ features:
   - title: 自己的配置
     details: 建议在项目根放一份 fast_dev_config.yaml，类名、风格、输出目录都写清楚。
   - title: CLI / build_runner
-    details: dart run fast_dev gen，或走 build_runner。两套入口，同一套结果。
+    details: 一个包里两套入口，同一套结果：dart run fast_dev gen，或走 build_runner。
 ---

@@ -25,12 +25,11 @@ library;
 
 import 'package:build/build.dart';
 
-import 'src/assets_builder.dart';
-import 'src/post_process.dart';
+import 'src/builder/assets_builder.dart';
+import 'src/builder/post_process.dart';
 
 /// `build.yaml` 里 `builder_factories` 的入口。
-Builder fastDevBuilder(BuilderOptions options) =>
-    FastDevBuilder(options);
+Builder fastDevBuilder(BuilderOptions options) => FastDevBuilder(options);
 
 /// `build.yaml` 里 post-process `builder_factory` 的入口。
 PostProcessBuilder fastDevPostProcess(BuilderOptions options) =>

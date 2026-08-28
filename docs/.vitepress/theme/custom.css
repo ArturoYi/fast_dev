@@ -77,3 +77,16 @@
 .dark .VPHomeHero .image-container .image-src img {
   filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.35));
 }
+
+/* Outline / sidebar: long keys must not overflow the column */
+.VPDocAsideOutline .outline-link,
+.VPSidebarItem .text,
+.VPNavBarMenuLink {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.VPDocAsideOutline .outline-link {
+  display: block;
+}

@@ -14,12 +14,20 @@ outline: [2, 3]
 
 只写在 `dev_dependencies`。没有运行时 API。
 
+```sh
+dart pub add --dev fast_dev
+dart pub add --dev build_runner   # 只用 CLI 可以不加
+```
+
+或手写：
+
 ```yaml
 dev_dependencies:
-  fast_dev: ^0.0.1
-  fast_dev_runner: ^0.0.1
-  build_runner: ^2.4.0
+  fast_dev: ^0.0.1-beta.1
+  build_runner: ^2.7.2
 ```
+
+只用 `dart run fast_dev gen` 时不必写 `build_runner`。已经在用 `build_runner` 时加上 `fast_dev` 就会一起生成。
 
 资源清单还是写在 `pubspec.yaml`。目录会递归展开，一般写一层就够：
 
@@ -79,7 +87,7 @@ generate:
         fallback: file
 ```
 
-每个字段的含义、默认值和限制见 [配置](./configuration.md)。建完可以用下面这条核对解析结果：
+怎么建文件、怎么加载见 [配置](./configuration.md)。每个字段的含义、默认值和限制见 [Assets](/features/assets#配置)。建完可以用下面这条核对解析结果：
 
 ```sh
 dart run fast_dev config
@@ -96,7 +104,7 @@ dart run fast_dev gen
 已经在用 `build_runner` 时，一条 watch 就够，和其它生成器一起跑：
 
 ```sh
-dart run build_runner watch --delete-conflicting-outputs
+dart run build_runner watch
 ```
 
 怎么并列、`build.yaml` 怎么写，见 [build_runner](./build-runner.md)。

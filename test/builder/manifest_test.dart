@@ -1,4 +1,4 @@
-import 'package:fast_dev_runner/src/manifest.dart';
+import 'package:fast_dev/src/builder/manifest.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -13,15 +13,10 @@ void main() {
         ),
       ],
     );
-    final restored = FastDevManifest.fromJsonString(
-      original.toJsonString(),
-    );
+    final restored = FastDevManifest.fromJsonString(original.toJsonString());
     expect(restored.packageName, 'demo');
     expect(restored.packageRoot, '/tmp/demo');
-    expect(
-      restored.outputs.single.path,
-      'lib/gen/fast_dev/assets.gen.dart',
-    );
+    expect(restored.outputs.single.path, 'lib/gen/fast_dev/assets.gen.dart');
     expect(restored.outputs.single.contents, 'class A {}');
   });
 }

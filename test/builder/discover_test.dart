@@ -1,5 +1,5 @@
 import 'package:fast_dev/fast_dev.dart';
-import 'package:fast_dev_runner/src/discover.dart';
+import 'package:fast_dev/src/builder/discover.dart';
 import 'package:test/test.dart';
 
 void main() {
