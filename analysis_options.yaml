@@ -1,0 +1,6 @@
+include: package:lints/recommended.yaml
+
+linter:
+  rules:
+    # 对外 API 必须有文档。
+    public_member_api_docs: true

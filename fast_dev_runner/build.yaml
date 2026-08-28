@@ -1,0 +1,24 @@
+targets:
+  $default:
+    builders:
+      "fast_dev_runner:fast_dev":
+        enabled: false
+
+builders:
+  fast_dev:
+    import: "package:fast_dev_runner/builder.dart"
+    builder_factories: ["fastDevBuilder"]
+    build_extensions:
+      "$package$":
+        - .fast_dev.manifest.json
+    auto_apply: dependents
+    build_to: cache
+    applies_builders:
+      - fast_dev_runner:fast_dev_post_process
+
+post_process_builders:
+  fast_dev_post_process:
+    import: "package:fast_dev_runner/builder.dart"
+    builder_factory: "fastDevPostProcess"
+    input_extensions:
+      - .fast_dev.manifest.json

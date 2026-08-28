@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="26 26 96 52" role="img" aria-label="Fast Dev">
+  <defs>
+    <linearGradient id="fast-grad" x1="18" y1="78" x2="110" y2="18" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#41D1FF"/>
+      <stop offset="1" stop-color="#BD34FE"/>
+    </linearGradient>
+    <linearGradient id="fast-accent" x1="70" y1="32" x2="124" y2="78" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0175C2"/>
+      <stop offset="1" stop-color="#7C4DFF"/>
+    </linearGradient>
+  </defs>
+  <path
+    fill="url(#fast-grad)"
+    fill-rule="evenodd"
+    d="M26 76V26h28l28 14v24L54 76H26zm16-14V40h10l14 6v12l-14 6H42z"
+  />
+  <path
+    fill="url(#fast-accent)"
+    d="M86 42 120 26 100 78 86 58V42z"
+  />
+</svg>

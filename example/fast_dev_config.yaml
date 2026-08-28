@@ -1,0 +1,18 @@
+# example 配置。改这里再跑 `dart run fast_dev gen` 或 build_runner。
+version: 1
+
+generate:
+  output: lib/gen/fast_dev/
+  line_length: 100
+  assets:
+    class_name: ExampleAssets
+    style: nested
+    variants:
+      theme:
+        enabled: true
+      locale:
+        enabled: true
+        folders:
+          - zh
+          - en
+        fallback: file

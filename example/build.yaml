@@ -1,0 +1,12 @@
+# 让 build_runner 能看到资源目录和 fast_dev 配置。
+# 默认源集合不含这两项，watch 模式下新增图片或改配置不会触发重建。
+targets:
+  $default:
+    sources:
+      include:
+        - "$package$"
+        - lib/**
+        - test/**
+        - pubspec.yaml
+        - fast_dev_config.yaml
+        - assets/**

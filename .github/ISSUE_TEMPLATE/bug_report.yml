@@ -1,0 +1,93 @@
+name: Bug
+description: 生成不对、CLI 报错、配置解析失败
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        先搜一下 [已有 Issue](https://github.com/ArturoYi/fast_dev/issues)。说明在 [提 Bug](https://arturoyi.github.io/fast_dev/community/bugs.html)。
+        新功能用「功能」模板。别贴密钥或证书。
+  - type: textarea
+    id: summary
+    attributes:
+      label: 一句话
+      description: 比如「开了 locale 之后，zh_CN 目录没被剥掉」。
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 怎么复现
+      description: 越小越好。写清是 `dart run fast_dev gen` 还是 `build_runner`。
+      placeholder: |
+        1. pubspec.yaml / fast_dev_config.yaml
+        2. 资源目录
+        3. dart run fast_dev gen
+        4. 看到 …
+    validations:
+      required: true
+  - type: textarea
+    id: config
+    attributes:
+      label: 配置
+      description: 精简后的 `fast_dev_config.yaml` 和 `flutter.assets`。
+      render: yaml
+    validations:
+      required: true
+  - type: textarea
+    id: tree
+    attributes:
+      label: 资源目录
+      description: `find assets -type f` 也行。
+      render: text
+  - type: textarea
+    id: logs
+    attributes:
+      label: 输出
+      description: 「已生成 / 已跳过 / 警告」留着。
+      render: text
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Fast Dev 版本或 commit
+    validations:
+      required: true
+  - type: input
+    id: dart
+    attributes:
+      label: Dart / Flutter 版本
+      placeholder: "dart --version 或 flutter --version"
+    validations:
+      required: true
+  - type: dropdown
+    id: trigger
+    attributes:
+      label: 怎么触发的
+      options:
+        - CLI（dart run fast_dev …）
+        - build_runner
+        - 都有
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: 系统
+      placeholder: "macOS 15 / Windows 11 / Ubuntu 24.04"
+    validations:
+      required: true
