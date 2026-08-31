@@ -12,7 +12,7 @@ import 'assets/expand.dart';
 /// 4. 若要读盘，在 `runGenerate` / `composeGenerate` 里准备输入，
 ///    放进 [GeneratorContext]。
 ///
-/// 细节见仓库根目录 `ROADMAP.md`。
+/// 阶段与预留扩展见文档站计划页。
 abstract interface class Generator {
   /// 稳定 id，用于 skip 文案，并与未来的 `generate.<id>` 配置段对齐。
   String get id;

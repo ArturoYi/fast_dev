@@ -12,6 +12,14 @@ topics:
   - code-generation
   - build-runner
 
+platforms:
+  android:
+  ios:
+  linux:
+  macos:
+  web:
+  windows:
+
 environment:
   sdk: ^3.12.2
 

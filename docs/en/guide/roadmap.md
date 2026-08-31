@@ -7,8 +7,6 @@ outline: [2, 3]
 
 Dev-time tool. Assets only for now. Reserved config keys warn; they are not implemented yet.
 
-Contributors: [ROADMAP.md](https://github.com/ArturoYi/fast_dev/blob/main/ROADMAP.md) in the repo.
-
 ## Stages
 
 | Stage | Status | What |

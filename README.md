@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://arturoyi.github.io/fast_dev/">
+  <a href="https://arturoyi.github.io/fast_dev/en/">
     <img src="docs/public/logo.svg" alt="Fast Dev" width="160" />
   </a>
 </p>
@@ -7,8 +7,8 @@
 <h1 align="center">Fast Dev</h1>
 
 <p align="center">
-  开发期用的 Flutter 工具<br />
-  写在 <code>dev_dependencies</code>
+  Flutter tooling for development time<br />
+  Lives in <code>dev_dependencies</code>
 </p>
 
 <p align="center">
@@ -24,31 +24,33 @@
 </p>
 
 <p align="center">
-  <a href="https://arturoyi.github.io/fast_dev/">文档</a>
+  English
   ·
-  <a href="https://arturoyi.github.io/fast_dev/en/">English</a>
+  <a href="README.zh-CN.md">简体中文</a>
+  ·
+  <a href="https://arturoyi.github.io/fast_dev/en/">Docs</a>
   ·
   <a href="https://github.com/ArturoYi/fast_dev/issues">Issues</a>
 </p>
 
 ---
 
-## 是什么
+## What it is
 
-根据 `flutter.assets` 生成类型安全的资源路径。一个包，CLI 和 `build_runner` 都能跑。生成文件进仓库，工具留在开发机和 CI。
+Typed asset paths from `flutter.assets`. One package, two entry points: CLI and `build_runner`, same output. Generated files are committed. The tool stays on the machine and in CI.
 
-如果希望一些业务相关的能力，可以用 [Fast Package](https://github.com/ArturoYi/fast_package)。
+For business-related helpers, see [Fast Package](https://github.com/ArturoYi/fast_package).
 
 ---
 
-## 用法
+## Usage
 
 ```sh
 dart pub add --dev fast_dev
-dart pub add --dev build_runner   # 只用 CLI 可以不加
+dart pub add --dev build_runner   # skip if CLI-only
 ```
 
-或手写：
+Or by hand:
 
 ```yaml
 dev_dependencies:
@@ -60,9 +62,9 @@ flutter:
     - assets/
 ```
 
-只用 CLI 时不必写 `build_runner`。已经在用 `build_runner` 时加上 `fast_dev` 就会一起生成。
+Skip `build_runner` if you only run the CLI. If the project already uses `build_runner`, adding `fast_dev` is enough.
 
-建议在项目根自己建一份 `fast_dev_config.yaml`，和 `pubspec.yaml` 同级。没有也能跑，有的话类名、风格、输出目录都在仓库里。
+Put a `fast_dev_config.yaml` next to `pubspec.yaml`. The tool can run without it. A file in the repo keeps class name, style, and output visible to everyone.
 
 ```yaml
 version: 1
@@ -75,30 +77,30 @@ generate:
     style: nested # nested | camel | snake
 ```
 
-每个字段的说明见 [配置](https://arturoyi.github.io/fast_dev/guide/configuration.html)。
+Field details: [Configuration](https://arturoyi.github.io/fast_dev/en/guide/configuration.html).
 
 ```sh
 dart run fast_dev help
 dart run fast_dev help gen
 dart run fast_dev config
 dart run fast_dev gen
-dart run build_runner watch   # 已经在用 build_runner 时
+dart run build_runner watch   # if you already use build_runner
 ```
 
 ```dart
 Image.asset(Assets.images.logo);
-Image.asset(Assets.images.logo.of(context)); // 开了 theme / locale 之后
+Image.asset(Assets.images.logo.of(context)); // after theme / locale variants are on
 ```
 
-例子在 [`example/`](example/)。
+A small app lives in [`example/`](example/).
 
 ---
 
-## 贡献
+## Contributing
 
-Issue 和 PR 都可以。报问题用 [这个说明](https://arturoyi.github.io/fast_dev/community/bugs.html)。
+Issues and PRs are welcome. How to report a problem: [Bugs](https://arturoyi.github.io/fast_dev/en/community/bugs.html).
 
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 - [MIT](LICENSE)
 
-喜欢的话，点个 Star 就好。
+If this is useful, a star helps.

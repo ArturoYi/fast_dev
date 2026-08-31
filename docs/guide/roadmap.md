@@ -7,8 +7,6 @@ outline: [2, 3]
 
 开发期工具，现在只做 assets。预留键可以先写，这版会告警，不会当成已经实现。
 
-仓库里还有一份给贡献者看的 [ROADMAP.md](https://github.com/ArturoYi/fast_dev/blob/main/ROADMAP.md)。
-
 ## 阶段
 
 | 阶段 | 状态 | 内容 |
