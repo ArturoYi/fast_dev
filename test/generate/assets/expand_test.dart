@@ -56,19 +56,6 @@ void main() {
     ]);
   });
 
-  test('密度目录合并到基准路径', () {
-    _write(temp, 'assets/images/logo.png', 'x');
-    _write(temp, 'assets/images/2.0x/logo.png', 'xx');
-    _write(temp, 'assets/images/3.0x/only.png', 'y');
-
-    final result = expandFlutterAssets(
-      packageRoot: temp.path,
-      entries: const [FlutterAssetEntry(path: 'assets/')],
-    );
-
-    expect(result.paths, ['assets/images/logo.png', 'assets/images/only.png']);
-  });
-
   test('忽略点文件、排除名单和缺失条目告警', () {
     _write(temp, 'assets/images/logo.svg', '<svg />');
     _write(temp, 'assets/images/.DS_Store', 'junk');
@@ -91,8 +78,6 @@ void main() {
     final result = normalizeDiscoveredAssetPaths(
       posixPaths: const [
         'assets/images/logo.svg',
-        'assets/images/2.0x/logo.svg',
-        'assets/images/2.0x/nested/skip.svg',
         'assets/images/.DS_Store',
         'assets/data/skip.yaml',
       ],

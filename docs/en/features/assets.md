@@ -9,6 +9,16 @@ Reads `flutter.assets`, expands directories, writes `assets.gen.dart`.
 
 No theme or locale folders? [Quick start](#quick-start) is enough. If you have `light/` / `dark/` or `zh/` / `en/`, see [Theme and locale](#theme-and-locale).
 
+::: danger 2.0x / 3.0x are not supported
+This tool **does not** support Flutter density folders (`2.0x`, `3.0x`, `1.5x`, or any `number + x` directory).
+
+- It will **not** detect them, collapse them to the base path, or pick a scale for the device
+- `assets/images/2.0x/logo.png` is a normal nested folder and becomes its own member, not a 2x variant of `logo`
+- **Do not** lay out assets as multi-resolution folders, and do not treat that as a generator feature
+
+Keep one base file, such as `assets/images/logo.png`.
+:::
+
 ## Quick start
 
 List a directory in `pubspec.yaml`. One line is usually enough:
@@ -74,7 +84,9 @@ Only `flutter.assets`. Directories are expanded recursively. `assets/` in `pubsp
 
 File entries stay files. Missing paths warn and are skipped.
 
-Flutter density folders (`2.0x`, `3.0x`) collapse to the base path. Dotfiles are skipped.
+Dotfiles are skipped.
+
+`2.0x` / `3.0x` density folders are **not supported**. They are not collapsed to the base path. See the notice at the top of this page.
 
 flavors on `flutter.assets` are treated as normal paths, with a warning. transformers are ignored, also with a warning. Neither changes generation rules.
 
@@ -275,7 +287,7 @@ folders:
   dark: [night, dark]
 ```
 
-Rules: single-segment names only; no density names (`2.0x`); light and dark cannot share a name. Lists replace the default list.
+Rules: single-segment names only; light and dark cannot share a name. Lists replace the default list.
 
 Theme folders can sit at any depth. At most one theme segment is stripped per path.
 
@@ -336,6 +348,7 @@ Names are sanitized. Keywords are avoided. If the root class hits `AssetPath` / 
 ## Tips
 
 - List directories in `pubspec.yaml`, not every file, unless you want a subset.
+- **Do not** use `2.0x` / `3.0x` folders. This tool does not support that mode.
 - Leave `variants` off if you do not split by theme or locale.
 - Use `.of(context)` after variants are on. Plain files stay `String`.
 - Commit generated files. CI can run `fast_dev gen` again to check.

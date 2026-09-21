@@ -61,7 +61,7 @@ Run this after editing YAML, then `gen`.
 
 ## `gen`
 
-Write `assets.gen.dart`.
+Write `assets.gen.dart` / `fonts.gen.dart`.
 
 ```sh
 dart run fast_dev gen
@@ -69,6 +69,6 @@ dart run fast_dev gen
 
 Prints written / skipped / warnings. Output dir is `generate.output`, default `lib/gen/fast_dev/`.
 
-Empty `flutter.assets`, or `assets.enabled: false`, skips and says why.
+An empty list, or `enabled: false`, skips and says why.
 
 If the project already uses `build_runner`, you can skip the CLI. See [build_runner](./build-runner.md).

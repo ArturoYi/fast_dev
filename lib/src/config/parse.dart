@@ -135,7 +135,71 @@ GenerateConfig _parseGenerate(YamlMap? map, List<String> warnings) {
       yamlReadMap(map, 'assets', path: 'generate.assets'),
       warnings,
     ),
+    fonts: _parseFonts(
+      yamlReadMap(map, 'fonts', path: 'generate.fonts'),
+      warnings,
+    ),
   );
+}
+
+FontsGenerateConfig _parseFonts(YamlMap? map, List<String> warnings) {
+  const d = FontsGenerateConfig.defaults;
+  if (map == null) {
+    return d;
+  }
+  yamlWarnUnknownKeys(
+    map: map,
+    known: const {'enabled', 'class_name', 'package', 'fallbacks'},
+    prefix: 'generate.fonts',
+    warnings: warnings,
+  );
+  return FontsGenerateConfig(
+    enabled: yamlReadBool(
+      map,
+      'enabled',
+      defaultValue: d.enabled,
+      path: 'generate.fonts.enabled',
+    ),
+    className: _requireClassName(
+      yamlReadString(
+        map,
+        'class_name',
+        defaultValue: d.className,
+        path: 'generate.fonts.class_name',
+      ),
+      path: 'generate.fonts.class_name',
+    ),
+    package: yamlReadBool(
+      map,
+      'package',
+      defaultValue: d.package,
+      path: 'generate.fonts.package',
+    ),
+    fallbacks: _fontFallbackNames(
+      yamlReadStringOrStringList(
+        map,
+        'fallbacks',
+        defaultValue: d.fallbacks,
+        path: 'generate.fonts.fallbacks',
+      ),
+    ),
+  );
+}
+
+List<String> _fontFallbackNames(List<String> raw) {
+  final result = <String>[];
+  final seen = <String>{};
+  for (final item in raw) {
+    final name = item.trim();
+    if (name.isEmpty) {
+      throw const ConfigException('generate.fonts.fallbacks 不能包含空字符串');
+    }
+    if (!seen.add(name)) {
+      continue;
+    }
+    result.add(name);
+  }
+  return List<String>.unmodifiable(result);
 }
 
 AssetsGenerateConfig _parseAssets(YamlMap? map, List<String> warnings) {
@@ -371,8 +435,6 @@ void _rejectOverlappingVariantFolders(
   }
 }
 
-final _densityFolder = RegExp(r'^\d+(\.\d+)?x$');
-
 List<String> _folderNames(
   List<String> raw, {
   required String path,
@@ -401,9 +463,6 @@ void _validateFolderName(String name, {required String path}) {
       name == '.' ||
       name == '..') {
     throw ConfigException('$path 不是合法的单层目录名，收到 `$name`');
-  }
-  if (_densityFolder.hasMatch(name)) {
-    throw ConfigException('$path 不能使用密度目录名 `$name`（与 2.0x 冲突）');
   }
 }
 

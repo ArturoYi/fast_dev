@@ -7,7 +7,7 @@ export 'manifest.dart';
 
 /// 从 `pubspec.yaml` 文本解析 Flutter 资源清单，不访问文件系统。
 ///
-/// 只关心 `name` 和 `flutter.assets`。其它段留给后续生成器。
+/// 关心 `name`、`flutter.assets` 和 `flutter.fonts`。
 FlutterManifestParseResult parseFlutterManifest(
   String contents, {
   Uri? sourceUrl,
@@ -39,12 +39,15 @@ FlutterManifestParseResult parseFlutterManifest(
   }
 
   final packageName = _readName(root);
-  final assetEntries = _readAssets(root, warnings);
+  final flutter = _readFlutter(root);
+  final assetEntries = _readAssets(flutter, warnings);
+  final fontFamilies = _readFonts(flutter, warnings);
 
   return FlutterManifestParseResult(
     manifest: FlutterManifest(
       packageName: packageName,
       assetEntries: List.unmodifiable(assetEntries),
+      fontFamilies: List.unmodifiable(fontFamilies),
     ),
     warnings: List.unmodifiable(warnings),
   );
@@ -58,13 +61,20 @@ String _readName(YamlMap root) {
   return '';
 }
 
-List<FlutterAssetEntry> _readAssets(YamlMap root, List<String> warnings) {
+YamlMap? _readFlutter(YamlMap root) {
   final flutter = root['flutter'];
   if (flutter == null) {
-    return const [];
+    return null;
   }
   if (flutter is! YamlMap) {
     throw const GenerateException('pubspec.yaml 的 flutter: 必须是键值对 (Map)');
+  }
+  return flutter;
+}
+
+List<FlutterAssetEntry> _readAssets(YamlMap? flutter, List<String> warnings) {
+  if (flutter == null) {
+    return const [];
   }
 
   final assets = flutter['assets'];
@@ -123,6 +133,96 @@ FlutterAssetEntry? _readAssetEntry(
   }
 
   throw GenerateException('flutter.assets[$index] 必须是路径字符串或带 path 的键值对');
+}
+
+List<FlutterFontFamily> _readFonts(YamlMap? flutter, List<String> warnings) {
+  if (flutter == null) {
+    return const [];
+  }
+
+  final fonts = flutter['fonts'];
+  if (fonts == null) {
+    return const [];
+  }
+  if (fonts is! YamlList) {
+    throw const GenerateException('pubspec.yaml 的 flutter.fonts 必须是列表');
+  }
+
+  final seen = <String>{};
+  final result = <FlutterFontFamily>[];
+  for (var i = 0; i < fonts.length; i++) {
+    final item = fonts.nodes[i];
+    final family = _readFontFamily(item, index: i, warnings: warnings);
+    if (family == null) {
+      continue;
+    }
+    if (!seen.add(family.family)) {
+      warnings.add('flutter.fonts 重复的 family: `${family.family}`，已保留前者');
+      continue;
+    }
+    result.add(family);
+  }
+  return result;
+}
+
+FlutterFontFamily? _readFontFamily(
+  YamlNode item, {
+  required int index,
+  required List<String> warnings,
+}) {
+  if (item is! YamlMap) {
+    throw GenerateException('flutter.fonts[$index] 必须是带 family 的键值对');
+  }
+
+  final familyValue = item['family'];
+  if (familyValue is! String || familyValue.trim().isEmpty) {
+    warnings.add('flutter.fonts[$index] 缺少非空的 family，已跳过');
+    return null;
+  }
+
+  return FlutterFontFamily(
+    family: familyValue.trim(),
+    assetPaths: _readFontAssetPaths(
+      item['fonts'],
+      index: index,
+      warnings: warnings,
+    ),
+  );
+}
+
+List<String> _readFontAssetPaths(
+  Object? value, {
+  required int index,
+  required List<String> warnings,
+}) {
+  if (value == null) {
+    return const [];
+  }
+  if (value is! YamlList) {
+    warnings.add('flutter.fonts[$index].fonts 必须是列表，已忽略');
+    return const [];
+  }
+
+  final seen = <String>{};
+  final result = <String>[];
+  for (var i = 0; i < value.length; i++) {
+    final node = value.nodes[i];
+    if (node is! YamlMap) {
+      warnings.add('flutter.fonts[$index].fonts[$i] 必须是带 asset 的键值对，已跳过');
+      continue;
+    }
+    final asset = node['asset'];
+    if (asset is! String || asset.trim().isEmpty) {
+      warnings.add('flutter.fonts[$index].fonts[$i] 缺少非空的 asset，已跳过');
+      continue;
+    }
+    final path = asset.trim().replaceAll('\\', '/');
+    if (!seen.add(path)) {
+      continue;
+    }
+    result.add(path);
+  }
+  return List<String>.unmodifiable(result);
 }
 
 List<String> _readStringList(Object? value) {

@@ -26,7 +26,7 @@ flutter:
       plan.outputs.single.contents,
       contains('abstract final class Assets'),
     );
-    expect(plan.skipped, isEmpty);
+    expect(plan.skipped.single, contains('fonts'));
   });
 
   test('outputOverride 改写出路径', () {
@@ -69,7 +69,63 @@ flutter:
     );
     final plan = planGenerate(config: config, parsed: parsed);
     expect(plan.outputs, isEmpty);
+    expect(plan.skipped, hasLength(2));
+    expect(plan.skipped, contains(contains('assets')));
+    expect(plan.skipped, contains(contains('fonts')));
+  });
+
+  test('写出 fonts.gen.dart', () {
+    final parsed = parseFlutterManifest('''
+name: demo
+flutter:
+  fonts:
+    - family: Raleway
+      fonts:
+        - asset: fonts/Raleway-Regular.ttf
+''');
+    final plan = planGenerate(config: FastDevConfig.defaults, parsed: parsed);
+
+    expect(plan.outputs.single.relativePath, 'lib/gen/fast_dev/fonts.gen.dart');
+    expect(
+      plan.outputs.single.contents,
+      contains('abstract final class FontFamily'),
+    );
+    expect(plan.outputs.single.contents, contains("raleway = 'Raleway'"));
     expect(plan.skipped.single, contains('assets'));
+  });
+
+  test('fonts.package 按库模式写出', () {
+    final parsed = parseFlutterManifest('''
+name: design_system
+flutter:
+  fonts:
+    - family: Raleway
+      fonts:
+        - asset: fonts/Raleway-Regular.ttf
+''');
+    const config = FastDevConfig(
+      version: kCurrentConfigVersion,
+      generate: GenerateConfig(
+        output: kDefaultGenerateOutput,
+        lineLength: 80,
+        assets: AssetsGenerateConfig(
+          enabled: false,
+          className: 'Assets',
+          style: AssetStyle.nested,
+        ),
+        fonts: FontsGenerateConfig(
+          enabled: true,
+          className: 'FontFamily',
+          package: true,
+        ),
+      ),
+    );
+    final plan = planGenerate(config: config, parsed: parsed);
+    expect(plan.outputs.single.contents, contains("package = 'design_system'"));
+    expect(
+      plan.outputs.single.contents,
+      contains(r"raleway = 'packages/$package/Raleway'"),
+    );
   });
 
   test('可注入自定义 Generator', () {
@@ -79,10 +135,7 @@ flutter:
       parsed: parsed,
       generators: const [_StubGenerator()],
     );
-    expect(
-      plan.outputs.single.relativePath,
-      'lib/gen/fast_dev/stub.gen.dart',
-    );
+    expect(plan.outputs.single.relativePath, 'lib/gen/fast_dev/stub.gen.dart');
     expect(plan.outputs.single.contents, 'class Stub {}');
     expect(plan.skipped, isEmpty);
   });

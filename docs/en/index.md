@@ -4,7 +4,7 @@ layout: home
 hero:
   name: Fast Dev
   text: Flutter tooling for dev time
-  tagline: Lives in dev_dependencies. Typed asset paths from flutter.assets.
+  tagline: Lives in dev_dependencies. Typed asset and font references from pubspec.yaml.
   image:
     src: /logo.svg
     alt: Fast Dev Logo
@@ -22,6 +22,8 @@ hero:
 features:
   - title: Asset paths
     details: Reads flutter.assets from pubspec.yaml and writes assets.gen.dart. Bad paths fail at compile time.
+  - title: Font families
+    details: Reads flutter.fonts and writes FontFamily.raleway. No more fontFamily string literals.
   - title: Theme and locale
     details: Fold light / dark and zh / en into one asset. Pick a path with of(context).
   - title: Your config

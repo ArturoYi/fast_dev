@@ -4,15 +4,12 @@ import 'package:path/path.dart' as p;
 
 import '../../pubspec/manifest.dart';
 
-/// Flutter 分辨率变体目录，例如 `2.0x`、`3.0x`、`1.5x`。
-final densitySegmentPattern = RegExp(r'^\d+(\.\d+)?x$');
-
 /// [expandFlutterAssets] 的返回值。
 final class AssetExpandResult {
   /// 见 [paths]、[warnings]。
   const AssetExpandResult({required this.paths, required this.warnings});
 
-  /// 已去密度目录、已去重、按路径排序的 posix 相对路径。
+  /// 已去重、按路径排序的 posix 相对路径。
   final List<String> paths;
 
   /// 找不到文件、flavor 等非致命问题。
@@ -22,7 +19,7 @@ final class AssetExpandResult {
 /// 把 `flutter.assets` 条目展开成具体文件路径。
 ///
 /// 目录会**递归**子文件夹，因此 pubspec 里只写 `assets/` 也能扫到
-/// `assets/images/`、`assets/data/`。`2.0x` 等密度目录仍合并到基准路径；
+/// `assets/images/`、`assets/data/`。
 /// [exclude] 里的路径不会进生成结果（给后续生成器排除自己的清单文件用）。
 AssetExpandResult expandFlutterAssets({
   required String packageRoot,
@@ -58,7 +55,7 @@ AssetExpandResult expandFlutterAssets({
 /// 把已经列出来的文件路径做成和 [expandFlutterAssets] 相同的结果。
 ///
 /// `build_runner` 通过 `BuildStep.findAssets` 拿到路径后走这里，这样
-/// 规范化（密度目录、点文件、排除名单）不必再绑 `dart:io`。
+/// 规范化（点文件、排除名单）不必再绑 `dart:io`。
 AssetExpandResult normalizeDiscoveredAssetPaths({
   required Iterable<String> posixPaths,
   Iterable<String> exclude = const [],
@@ -73,14 +70,10 @@ AssetExpandResult normalizeDiscoveredAssetPaths({
     if (_isIgnored(p.basename(relative))) {
       continue;
     }
-    if (_densitySegmentIsNotFileParent(relative)) {
+    if (skipped.contains(relative)) {
       continue;
     }
-    final collapsed = collapseDensityPath(relative);
-    if (collapsed.isEmpty || skipped.contains(collapsed)) {
-      continue;
-    }
-    paths.add(collapsed);
+    paths.add(relative);
   }
   final sorted = paths.toList()..sort();
   return AssetExpandResult(paths: sorted, warnings: const []);
@@ -93,17 +86,6 @@ String posixAssetKey(String path) {
     out = out.substring(0, out.length - 1);
   }
   return out;
-}
-
-/// 去掉路径里的密度目录段。
-///
-/// `assets/images/2.0x/logo.png` → `assets/images/logo.png`。
-String collapseDensityPath(String posixPath) {
-  final parts = posixPath.split('/')
-    ..removeWhere(
-      (part) => part.isEmpty || densitySegmentPattern.hasMatch(part),
-    );
-  return parts.join('/');
 }
 
 void _addDirectory(
@@ -119,32 +101,12 @@ void _addDirectory(
 
   final entities = directory.listSync(followLinks: false);
   for (final entity in entities) {
-    final name = p.basename(entity.path);
     if (entity is File) {
       paths.add(_posixRelative(entity.path, root));
     } else if (entity is Directory) {
-      if (densitySegmentPattern.hasMatch(name)) {
-        for (final child in entity.listSync(followLinks: false)) {
-          if (child is File) {
-            paths.add(_posixRelative(child.path, root));
-          }
-        }
-      } else {
-        _addDirectory(entity, root, paths, visited);
-      }
+      _addDirectory(entity, root, paths, visited);
     }
   }
-}
-
-/// CLI 只收集密度目录下的直接文件；glob 可能多扫到子目录，这里丢掉。
-bool _densitySegmentIsNotFileParent(String posixPath) {
-  final parts = posixPath.split('/').where((part) => part.isNotEmpty).toList();
-  for (var i = 0; i < parts.length; i++) {
-    if (densitySegmentPattern.hasMatch(parts[i]) && i != parts.length - 2) {
-      return true;
-    }
-  }
-  return false;
 }
 
 bool _isIgnored(String basename) {

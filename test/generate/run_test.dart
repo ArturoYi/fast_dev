@@ -40,7 +40,7 @@ generate:
     final result = runGenerate(loaded);
 
     expect(result.written, ['lib/gen/fast_dev/assets.gen.dart']);
-    expect(result.skipped, isEmpty);
+    expect(result.skipped.single, contains('fonts'));
 
     final generated = File(
       p.join(temp.path, 'lib/gen/fast_dev/assets.gen.dart'),
@@ -78,10 +78,9 @@ generate:
       ..parent.createSync(recursive: true)
       ..writeAsStringSync('<svg zh />');
 
-    final result = runGenerate(
-      loadFastDevConfig(fromDirectory: temp.path),
-    );
+    final result = runGenerate(loadFastDevConfig(fromDirectory: temp.path));
     expect(result.written, ['lib/gen/fast_dev/assets.gen.dart']);
+    expect(result.skipped.single, contains('fonts'));
 
     final generated = File(
       p.join(temp.path, 'lib/gen/fast_dev/assets.gen.dart'),
@@ -108,16 +107,44 @@ generate:
       ..parent.createSync(recursive: true)
       ..writeAsStringSync('x');
 
-    final result = runGenerate(
-      loadFastDevConfig(fromDirectory: temp.path),
-    );
+    final result = runGenerate(loadFastDevConfig(fromDirectory: temp.path));
     expect(result.written, isEmpty);
-    expect(result.skipped.single, contains('assets'));
+    expect(result.skipped, contains(contains('assets')));
+    expect(result.skipped, contains(contains('fonts')));
     expect(
-      File(
-        p.join(temp.path, 'lib/gen/fast_dev/assets.gen.dart'),
-      ).existsSync(),
+      File(p.join(temp.path, 'lib/gen/fast_dev/assets.gen.dart')).existsSync(),
       isFalse,
     );
+  });
+
+  test('写出 lib/gen/fast_dev/fonts.gen.dart', () {
+    File(p.join(temp.path, 'pubspec.yaml')).writeAsStringSync('''
+name: demo
+flutter:
+  fonts:
+    - family: Raleway
+      fonts:
+        - asset: fonts/Raleway-Regular.ttf
+    - family: RobotoMono
+      fonts:
+        - asset: fonts/RobotoMono-Regular.ttf
+''');
+    File(p.join(temp.path, kConfigFileName)).writeAsStringSync('''
+generate:
+  fonts:
+    class_name: DemoFonts
+''');
+
+    final result = runGenerate(loadFastDevConfig(fromDirectory: temp.path));
+
+    expect(result.written, ['lib/gen/fast_dev/fonts.gen.dart']);
+    expect(result.skipped.single, contains('assets'));
+
+    final generated = File(
+      p.join(temp.path, 'lib/gen/fast_dev/fonts.gen.dart'),
+    ).readAsStringSync();
+    expect(generated, contains('abstract final class DemoFonts'));
+    expect(generated, contains("raleway = 'Raleway'"));
+    expect(generated, contains("robotoMono = 'RobotoMono'"));
   });
 }

@@ -14,7 +14,6 @@ void main() {
       exclude: const ['assets/data/skip.yaml'],
       graphPaths: const [
         'assets/images/logo.svg',
-        'assets/images/2.0x/logo.svg',
         'assets/data/skip.yaml',
       ],
       disk: const AssetExpandResult(

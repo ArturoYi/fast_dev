@@ -67,11 +67,11 @@ targets:
 dart run build_runner watch
 ```
 
-改 `lib/` 里的源码，该出的生成文件会出。加图片或改 `fast_dev_config.yaml`，会出 `assets.gen.dart`。不用为 Fast Dev 再开一个进程。
+改 `lib/` 里的源码，该出的生成文件会出。加图片、改 `flutter.fonts` 或改 `fast_dev_config.yaml`，会出 `assets.gen.dart` / `fonts.gen.dart`。不用为 Fast Dev 再开一个进程。
 
 ## watch 要看见资源和配置
 
-默认源集合有 `lib/**`，其它生成器盯的 `.dart` 本来就在里面。`assets/` 和 `fast_dev_config.yaml` 不在默认集合里。想在加图或改配置时自动重跑，在应用的 `build.yaml` 里把它们加进 `sources.include`，**保留** `lib/**`：
+默认源集合有 `lib/**`，其它生成器盯的 `.dart` 本来就在里面。`assets/` 和 `fast_dev_config.yaml` 不在默认集合里。字体族写在 `pubspec.yaml`，改它才会重出 `fonts.gen.dart`。想在加图、改字体清单或改配置时自动重跑，在应用的 `build.yaml` 里把它们加进 `sources.include`，**保留** `lib/**`：
 
 ```yaml
 targets:

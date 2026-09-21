@@ -16,3 +16,6 @@ generate:
           - zh
           - en
         fallback: file
+  fonts:
+    class_name: ExampleFontFamily
+    package: false

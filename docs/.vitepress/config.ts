@@ -69,7 +69,10 @@ const sidebarZhGroups = [
   },
   {
     text: '能力',
-    items: [{ text: 'Assets', link: '/features/assets' }],
+    items: [
+      { text: 'Assets', link: '/features/assets' },
+      { text: 'Fonts', link: '/features/fonts' },
+    ],
   },
   {
     text: '社区',
@@ -95,7 +98,10 @@ const sidebarEnGroups = [
   },
   {
     text: 'Features',
-    items: [{ text: 'Assets', link: '/en/features/assets' }],
+    items: [
+      { text: 'Assets', link: '/en/features/assets' },
+      { text: 'Fonts', link: '/en/features/fonts' },
+    ],
   },
   {
     text: 'Community',
@@ -117,7 +123,7 @@ const docSidebarPrefixesEn = ['/en/guide/', '/en/features/', '/en/community/']
 export default defineConfig({
   base: siteBase,
   title: 'Fast Dev',
-  description: '开发期用的 Flutter 工具：CLI 和 build_runner 生成类型安全的资源路径',
+  description: '开发期用的 Flutter 工具：CLI 和 build_runner 生成类型安全的资源与字体引用',
   lastUpdated: true,
   head: sharedHead,
   srcExclude: ['README.md'],
@@ -163,7 +169,7 @@ export default defineConfig({
     en: {
       label: 'English',
       lang: 'en-US',
-      description: 'Flutter dev-time tool: typed asset paths via CLI or build_runner',
+      description: 'Flutter dev-time tool: typed asset and font references via CLI or build_runner',
       link: '/en/',
       themeConfig: {
         logo: sharedLogo,

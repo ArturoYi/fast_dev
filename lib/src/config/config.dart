@@ -4,11 +4,11 @@
 /// [kConfigFileName] 里，**不会**再往 `pubspec.yaml` 写一份，
 /// 避免和 Flutter 自己的字段混在一起。
 ///
-/// 资源「打进包里的清单」仍然只认 `pubspec.yaml` 的 `flutter.assets`；
-/// 本文件只描述 **工具怎么做**（分组规则、输出目录、类名风格）。
+/// 资源「打进包里的清单」仍然只认 `pubspec.yaml` 的 `flutter.assets` /
+/// `flutter.fonts`；本文件只描述 **工具怎么做**（分组规则、输出目录、类名）。
 /// 两份清单一旦分叉，运行时才会发现漏资源。
 ///
-/// 当前只解析 assets。`imports` / `generate.fonts` / `generate.colors`
+/// 当前解析 assets 与 fonts。`imports` / `generate.colors`
 /// 写在配置里会告警并忽略，见 [kReservedRootConfigKeys] 与
 /// [kReservedGenerateConfigKeys]。
 library;
@@ -32,10 +32,10 @@ const kKnownRootConfigKeys = {'version', 'generate'};
 const kReservedRootConfigKeys = {'imports'};
 
 /// `generate` 当前会解析的键。
-const kKnownGenerateConfigKeys = {'output', 'line_length', 'assets'};
+const kKnownGenerateConfigKeys = {'output', 'line_length', 'assets', 'fonts'};
 
 /// `generate` 已预留的键。实现后移入 [kKnownGenerateConfigKeys]。
-const kReservedGenerateConfigKeys = {'fonts', 'colors'};
+const kReservedGenerateConfigKeys = {'colors'};
 
 /// 一份已经和默认值合并过的完整配置。
 ///
@@ -54,7 +54,7 @@ final class FastDevConfig {
   /// schema 版本，目前必须是 [kCurrentConfigVersion]。
   final int version;
 
-  /// 代码生成（当前仅 assets）。
+  /// 代码生成（assets / fonts）。
   final GenerateConfig generate;
 
   /// 把解析结果打成缩进文本，供 `fast_dev config` 打印。
@@ -70,13 +70,14 @@ final class FastDevConfig {
 /// 代码生成总开关与输出位置。
 ///
 /// `output` 只决定生成文件写到哪；**不会**改变 Flutter 从哪里打包资源。
-/// 后续生成器共用这两个字段，各自的段挂在 [assets] 旁边。
+/// 后续生成器共用这两个字段，各自的段挂在 [assets] / [fonts] 旁边。
 final class GenerateConfig {
   /// 见各字段说明。
   const GenerateConfig({
     required this.output,
     required this.lineLength,
     required this.assets,
+    this.fonts = FontsGenerateConfig.defaults,
   });
 
   /// 未在 YAML 中出现时使用的默认值。
@@ -84,6 +85,7 @@ final class GenerateConfig {
     output: kDefaultGenerateOutput,
     lineLength: 80,
     assets: AssetsGenerateConfig.defaults,
+    fonts: FontsGenerateConfig.defaults,
   );
 
   /// 生成文件目录，相对项目根。内部统一成 `/` 分隔且以 `/` 结尾。
@@ -97,13 +99,18 @@ final class GenerateConfig {
   /// 图片 / 其它 asset。
   final AssetsGenerateConfig assets;
 
+  /// 字体族。
+  final FontsGenerateConfig fonts;
+
   /// 见 [FastDevConfig.toPrettyString]。
   String toPrettyString({String indent = '  '}) {
     final buf = StringBuffer()
       ..writeln('output: $output')
       ..writeln('line_length: $lineLength')
       ..writeln('assets:')
-      ..write(_indentBlock(assets.toPrettyString(), indent));
+      ..write(_indentBlock(assets.toPrettyString(), indent))
+      ..writeln('fonts:')
+      ..write(_indentBlock(fonts.toPrettyString(), indent));
     return buf.toString().trimRight();
   }
 }
@@ -130,6 +137,52 @@ const kLocaleFallbackFile = 'file';
 /// `zh-CN` 与 `zh_CN` 视为同一语言，避免磁盘目录和配置写法不一致时拆成两项。
 String normalizeLocaleFolderKey(String name) =>
     name.toLowerCase().replaceAll('-', '_');
+
+/// `generate.fonts` 段。
+final class FontsGenerateConfig {
+  /// 见各字段说明。
+  const FontsGenerateConfig({
+    required this.enabled,
+    required this.className,
+    this.package = false,
+    this.fallbacks = const [],
+  });
+
+  /// 未在 YAML 中出现时使用的默认值。
+  static const FontsGenerateConfig defaults = FontsGenerateConfig(
+    enabled: true,
+    className: 'FontFamily',
+  );
+
+  /// 为 false 时不生成 `fonts.gen.dart`。
+  final bool enabled;
+
+  /// 生成的根类名。YAML 键 `class_name`，必须是合法 Dart 标识符。
+  final String className;
+
+  /// YAML 键 `package`。
+  ///
+  /// 为 true 时按库模式生成：写出 [className].package，成员值为
+  /// `packages/$package/Family`，给其它包直接当 `fontFamily` 用。
+  final bool package;
+
+  /// YAML 键 `fallbacks`。`flutter.fonts` 里的 family 名，按这个顺序
+  /// 生成 `FontFamily.fallbacks`，交给 `TextStyle.fontFamilyFallback`。
+  ///
+  /// 空列表（默认）不生成该成员。列表整份替换。
+  final List<String> fallbacks;
+
+  /// 见 [FastDevConfig.toPrettyString]。
+  String toPrettyString({String indent = '  '}) {
+    final buf = StringBuffer()
+      ..writeln('enabled: $enabled')
+      ..writeln('class_name: $className')
+      ..writeln('package: $package')
+      ..writeln('fallbacks:')
+      ..write(_prettyList(fallbacks, indent));
+    return buf.toString().trimRight();
+  }
+}
 
 /// `generate.assets` 段。
 final class AssetsGenerateConfig {

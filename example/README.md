@@ -1,6 +1,6 @@
 # fast_dev_example
 
-试 Fast Dev 的小应用。CLI 和 `build_runner` 都能生成 `lib/gen/fast_dev/assets.gen.dart`。
+试 Fast Dev 的小应用。CLI 和 `build_runner` 都能生成 `lib/gen/fast_dev/assets.gen.dart`。`pubspec.yaml` 写了 `flutter.fonts` 时还会出 `fonts.gen.dart`。
 
 ```sh
 cd example

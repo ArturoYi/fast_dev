@@ -37,7 +37,7 @@
 
 ## What it is
 
-Typed asset paths from `flutter.assets`. One package, two entry points: CLI and `build_runner`, same output. Generated files are committed. The tool stays on the machine and in CI.
+Typed asset paths from `flutter.assets`, and typed font families from `flutter.fonts`. One package, two entry points: CLI and `build_runner`, same output. Generated files are committed. The tool stays on the machine and in CI.
 
 For business-related helpers, see [Fast Package](https://github.com/ArturoYi/fast_package).
 
@@ -75,6 +75,9 @@ generate:
   assets:
     class_name: Assets
     style: nested # nested | camel | snake
+  fonts:
+    class_name: FontFamily
+    package: false # true for a fonts package
 ```
 
 Field details: [Configuration](https://arturoyi.github.io/fast_dev/en/guide/configuration.html).
@@ -90,6 +93,7 @@ dart run build_runner watch   # if you already use build_runner
 ```dart
 Image.asset(Assets.images.logo);
 Image.asset(Assets.images.logo.of(context)); // after theme / locale variants are on
+Text('Hello', style: TextStyle(fontFamily: FontFamily.raleway));
 ```
 
 A small app lives in [`example/`](example/).

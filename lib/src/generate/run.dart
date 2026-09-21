@@ -54,7 +54,7 @@ final class GenRunResult {
   }
 }
 
-/// 按配置跑已注册的生成器。当前内置只有 assets。
+/// 按配置跑已注册的生成器。当前内置是 assets 与 fonts。
 ///
 /// [generators] 默认是 [builtInGenerators]。
 GenRunResult runGenerate(

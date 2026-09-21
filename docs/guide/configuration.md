@@ -9,9 +9,9 @@ outline: [2, 3]
 
 没有这份文件也能跑，会用下面的默认值。自己写一份的好处是：类名、风格、输出目录、变体规则都在仓库里，生成结果可预期。
 
-哪些资源会打进应用，只看 `pubspec.yaml` 的 `flutter.assets`。`fast_dev_config.yaml` 不参与打包，只决定代码怎么生成（输出目录、类名、风格、变体）。
+哪些资源会打进应用，只看 `pubspec.yaml` 的 `flutter.assets` / `flutter.fonts`。`fast_dev_config.yaml` 不参与打包，只决定代码怎么生成（输出目录、类名、风格、变体）。
 
-各个模块读哪些字段、限制是什么，见对应页面：[Assets](/features/assets#配置)。主题和语言见 [主题和语言](/features/assets#主题和语言)。
+各个模块读哪些字段、限制是什么，见对应页面：[Assets](/features/assets#配置)、[Fonts](/features/fonts#配置)。主题和语言见 [主题和语言](/features/assets#主题和语言)。
 
 ## 怎么加载
 
@@ -27,7 +27,7 @@ outline: [2, 3]
 
 列表是整份替换，不是追加。比如默认 `theme.folders.light` 是 `[light]`，你写成 `light: [day]`，结果就是 `[day]`，不会变成 `[light, day]`。
 
-不认识的键会告警，然后忽略，不会让这次生成失败。预留键也一样：`imports`、`generate.fonts`、`generate.colors` 现在写了只会告警，不会当成已经实现。
+不认识的键会告警，然后忽略，不会让这次生成失败。预留键也一样：`imports`、`generate.colors` 现在写了只会告警，不会当成已经实现。
 
 建议写上 `version: 1`。现在只认 `1`，不写就当 `1`，写成其它整数会直接失败。
 
@@ -47,14 +47,14 @@ dart run fast_dev config
 
 当前会解析的字段都在这里，值就是内置默认值。按自己的项目改，用不到的可以删。
 
-每个字段怎么用，见对应模块。现在只有 [Assets](/features/assets#配置)。主题和语言字段见 [主题和语言](/features/assets#主题和语言)。
+每个字段怎么用，见对应模块。[Assets](/features/assets#配置)、[Fonts](/features/fonts#配置)。主题和语言字段见 [主题和语言](/features/assets#主题和语言)。
 
 ```yaml
 # schema。现在只认 1。不写就当 1。其它整数会直接失败。
 version: 1
 
-# 代码生成。现在下面只有 assets。
-# 预留键 fonts / colors 写了会告警，不会当成已经实现。
+# 代码生成。现在下面有 assets 和 fonts。
+# 预留键 colors 写了会告警，不会当成已经实现。
 generate:
   # 生成文件目录，相对项目根。只决定 .gen.dart 写到哪，
   # 不改变 Flutter 打哪些资源。空字符串会失败。
@@ -96,6 +96,23 @@ generate:
         # 对不上当前语言时用哪份：
         # file = 没有语言目录的那份文件；或某个 folders 里的语言码。
         fallback: file
+
+  # 字体族生成。关掉就不会写 fonts.gen.dart。
+  # 字段说明见 Fonts。
+  fonts:
+    # false 时跳过。YAML 里必须是真正的布尔（true / false）。
+    enabled: true
+
+    # 生成文件里的根类名。必须是合法 Dart 标识符，建议大驼峰。
+    class_name: FontFamily
+
+    # true 时按库模式生成 packages/$package/Family。
+    # 应用自己用字体保持 false。
+    package: false
+
+    # 生成 FontFamily.fallbacks，交给 TextStyle.fontFamilyFallback。
+    # 必须是 flutter.fonts 里的 family。空列表不生成该成员。
+    fallbacks: []
 ```
 
 ## 建议怎么写

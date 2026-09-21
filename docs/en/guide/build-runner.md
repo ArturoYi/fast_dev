@@ -67,11 +67,11 @@ Same as any other `build_runner` package: list it in `dev_dependencies`, share t
 dart run build_runner watch
 ```
 
-Edits under `lib/` rebuild those generators. New images or a change to `fast_dev_config.yaml` rebuild `assets.gen.dart`. No extra process for Fast Dev.
+Edits under `lib/` rebuild those generators. New images, a change to `flutter.fonts`, or a change to `fast_dev_config.yaml` rebuild `assets.gen.dart` / `fonts.gen.dart`. No extra process for Fast Dev.
 
 ## Watch and assets
 
-The default source set already includes `lib/**`, so other builders' `.dart` files are watched. `assets/` and `fast_dev_config.yaml` are not. To rebuild when those change, add them in the app `build.yaml` and **keep** `lib/**`:
+The default source set already includes `lib/**`, so other builders' `.dart` files are watched. `assets/` and `fast_dev_config.yaml` are not. Font families live in `pubspec.yaml`; changing it rebuilds `fonts.gen.dart`. To rebuild when those change, add them in the app `build.yaml` and **keep** `lib/**`:
 
 ```yaml
 targets:

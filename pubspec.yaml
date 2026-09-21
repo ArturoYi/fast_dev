@@ -1,5 +1,5 @@
 name: fast_dev
-description: "写在 dev_dependencies 的 Flutter 开发期工具：根据 flutter.assets 生成类型安全路径。CLI 和 build_runner 同一套结果。"
+description: "写在 dev_dependencies 的 Flutter 开发期工具：根据 flutter.assets / flutter.fonts 生成类型安全引用。CLI 和 build_runner 同一套结果。"
 version: 0.0.1-beta.1
 homepage: https://arturoyi.github.io/fast_dev/
 repository: https://github.com/ArturoYi/fast_dev
@@ -9,6 +9,7 @@ topics:
   - flutter
   - cli
   - assets
+  - fonts
   - code-generation
   - build-runner
 

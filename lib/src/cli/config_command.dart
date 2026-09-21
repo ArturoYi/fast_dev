@@ -22,7 +22,8 @@ final class ConfigCommand extends Command<void> {
   Never usageException(String message) => throw UsageException(message, usage);
 
   @override
-  String get usage => '''
+  String get usage =>
+      '''
 $description
 
 用法：

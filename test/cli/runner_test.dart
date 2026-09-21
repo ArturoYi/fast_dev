@@ -27,7 +27,9 @@ void main() {
 
   test('未知命令的报错是中文', () {
     expect(
-      () => FastDevCommandRunner().usageException('Could not find a command named "missing".'),
+      () => FastDevCommandRunner().usageException(
+        'Could not find a command named "missing".',
+      ),
       throwsA(
         isA<UsageException>().having(
           (e) => e.message,
@@ -52,5 +54,6 @@ void main() {
     final runner = FastDevCommandRunner();
     expect(runner.commands['config']!.usage, contains('不写文件'));
     expect(runner.commands['gen']!.usage, contains('assets.gen.dart'));
+    expect(runner.commands['gen']!.usage, contains('fonts.gen.dart'));
   });
 }

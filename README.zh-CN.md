@@ -37,7 +37,7 @@
 
 ## 是什么
 
-根据 `flutter.assets` 生成类型安全的资源路径。一个包，CLI 和 `build_runner` 都能跑。生成文件进仓库，工具留在开发机和 CI。
+根据 `flutter.assets` 生成类型安全的资源路径，根据 `flutter.fonts` 生成 `FontFamily.raleway`。一个包，CLI 和 `build_runner` 都能跑。生成文件进仓库，工具留在开发机和 CI。
 
 如果希望一些业务相关的能力，可以用 [Fast Package](https://github.com/ArturoYi/fast_package)。
 
@@ -75,6 +75,9 @@ generate:
   assets:
     class_name: Assets
     style: nested # nested | camel | snake
+  fonts:
+    class_name: FontFamily
+    package: false # 字体在独立包装、给别人用时改 true
 ```
 
 每个字段的说明见 [配置](https://arturoyi.github.io/fast_dev/guide/configuration.html)。
@@ -90,6 +93,7 @@ dart run build_runner watch   # 已经在用 build_runner 时
 ```dart
 Image.asset(Assets.images.logo);
 Image.asset(Assets.images.logo.of(context)); // 开了 theme / locale 之后
+Text('Hello', style: TextStyle(fontFamily: FontFamily.raleway));
 ```
 
 例子在 [`example/`](example/)。

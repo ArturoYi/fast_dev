@@ -9,9 +9,9 @@ Create `fast_dev_config.yaml` next to `pubspec.yaml`.
 
 The tool can run without it and will use the defaults below. A file in the repo is better: class name, style, output, and variants are visible.
 
-What Flutter packs into the app still comes from `flutter.assets` in `pubspec.yaml`. `fast_dev_config.yaml` does not change that. It only controls code generation (output dir, class name, style, variants).
+What Flutter packs into the app still comes from `flutter.assets` / `flutter.fonts` in `pubspec.yaml`. `fast_dev_config.yaml` does not change that. It only controls code generation (output dir, class name, style, variants).
 
-Which keys each feature reads, and the rules for them: [Assets](/en/features/assets#config). Theme and locale: [Theme and locale](/en/features/assets#theme-and-locale).
+Which keys each feature reads, and the rules for them: [Assets](/en/features/assets#config), [Fonts](/en/features/fonts#config). Theme and locale: [Theme and locale](/en/features/assets#theme-and-locale).
 
 ## How it loads
 
@@ -27,7 +27,7 @@ Defaults first. Keys you write override. Partial files are fine.
 
 Lists replace, they do not append. Default `theme.folders.light` is `[light]`. If you write `light: [day]`, the result is `[day]`, not `[light, day]`.
 
-Unknown keys warn and are ignored. The run still succeeds. Reserved keys do the same: `imports`, `generate.fonts`, `generate.colors` warn and are not treated as implemented.
+Unknown keys warn and are ignored. The run still succeeds. Reserved keys do the same: `imports`, `generate.colors` warn and are not treated as implemented.
 
 Write `version: 1`. Only `1` is accepted. Omit it and it is `1`. Any other integer fails.
 
@@ -47,14 +47,14 @@ Prints the package root, the file that was read, warnings, and the merged values
 
 Every key that is parsed today, with the built-in defaults. Drop what you do not need.
 
-Field details live on the feature pages. Today that is [Assets](/en/features/assets#config). Theme and locale keys: [Theme and locale](/en/features/assets#theme-and-locale).
+Field details live on the feature pages: [Assets](/en/features/assets#config), [Fonts](/en/features/fonts#config). Theme and locale keys: [Theme and locale](/en/features/assets#theme-and-locale).
 
 ```yaml
 # Schema. Only 1 is accepted. Omit it and it is 1. Any other integer fails.
 version: 1
 
-# Code generation. assets is the only section under it today.
-# Reserved keys fonts / colors warn and are ignored.
+# Code generation. assets and fonts live under this today.
+# The reserved key colors warns and is ignored.
 generate:
   # Where .gen.dart is written, relative to the package root.
   # Does not change what Flutter packs. Empty string fails.
@@ -97,6 +97,23 @@ generate:
         # Miss on the current locale:
         # file = the file with no locale folder; or a code in folders.
         fallback: file
+
+  # Font family generation. Turn it off and fonts.gen.dart is not written.
+  # Field details: Fonts.
+  fonts:
+    # false skips generation. Use real YAML booleans (true / false).
+    enabled: true
+
+    # Root class name. Must be a Dart identifier. Prefer PascalCase.
+    class_name: FontFamily
+
+    # true writes packages/$package/Family for library packages.
+    # Leave false when the app uses its own fonts.
+    package: false
+
+    # Writes FontFamily.fallbacks for TextStyle.fontFamilyFallback.
+    # Names must be families in flutter.fonts. Empty list: no member.
+    fallbacks: []
 ```
 
 ## How to write it

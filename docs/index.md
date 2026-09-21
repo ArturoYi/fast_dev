@@ -4,7 +4,7 @@ layout: home
 hero:
   name: Fast Dev
   text: 开发用的 Flutter 工具
-  tagline: 开发期工具，不打包进业务包。
+  tagline: 开发期工具，不打包进业务包。类型安全的资源和字体引用。
   image:
     src: /logo.svg
     alt: Fast Dev Logo
@@ -22,6 +22,8 @@ hero:
 features:
   - title: 资源路径
     details: 读 pubspec.yaml 的 flutter.assets，写出 assets.gen.dart。路径写错会在编译期发现。
+  - title: 字体族
+    details: 读 flutter.fonts，写出 FontFamily.raleway。不要再写 fontFamily 字符串。
   - title: 主题和语言
     details: 可以把 light / dark、zh / en 目录收成一份资源，用 of(context) 选路径。
   - title: 自己的配置

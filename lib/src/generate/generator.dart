@@ -2,7 +2,7 @@ import '../config/config.dart';
 import '../pubspec/parse.dart';
 import 'assets/expand.dart';
 
-/// 一次 `gen` 可挂多个生成器。当前内置只有 assets。
+/// 一次 `gen` 可挂多个生成器。当前内置是 assets 与 fonts。
 ///
 /// 新增能力时：
 /// 1. 实现本接口；

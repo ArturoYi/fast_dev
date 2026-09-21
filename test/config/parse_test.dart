@@ -35,13 +35,11 @@ generate:
       expect(result.warnings, contains('未识别的配置项 `generate.extra`，已忽略'));
     });
 
-    test('预留的 imports / fonts / colors 告警后忽略', () {
+    test('预留的 imports / colors 告警后忽略', () {
       const yaml = '''
 imports:
   comments: true
 generate:
-  fonts:
-    enabled: true
   colors:
     inputs:
       - assets/colors/app.yaml
@@ -50,13 +48,79 @@ generate:
       expect(result.warnings, contains('配置项 `imports` 已预留，当前版本尚未实现，已忽略'));
       expect(
         result.warnings,
-        contains('配置项 `generate.fonts` 已预留，当前版本尚未实现，已忽略'),
-      );
-      expect(
-        result.warnings,
         contains('配置项 `generate.colors` 已预留，当前版本尚未实现，已忽略'),
       );
       expect(result.config.generate.assets.enabled, isTrue);
+      expect(result.config.generate.fonts.enabled, isTrue);
+    });
+
+    test('解析 fonts 段', () {
+      const yaml = '''
+generate:
+  fonts:
+    enabled: false
+    class_name: MyFonts
+    package: true
+    fallbacks:
+      - NotoSansSC
+      - NotoNaskh
+      - NotoSansSC
+''';
+      final result = parseFastDevConfig(yaml);
+      expect(result.warnings, isEmpty);
+      expect(result.config.generate.fonts.enabled, isFalse);
+      expect(result.config.generate.fonts.className, 'MyFonts');
+      expect(result.config.generate.fonts.package, isTrue);
+      expect(result.config.generate.fonts.fallbacks, [
+        'NotoSansSC',
+        'NotoNaskh',
+      ]);
+    });
+
+    test('fonts.fallbacks 接受单个字符串', () {
+      final fonts = parseFastDevConfig('''
+generate:
+  fonts:
+    fallbacks: NotoSansSC
+''').config.generate.fonts;
+      expect(fonts.fallbacks, ['NotoSansSC']);
+    });
+
+    test('fonts.fallbacks 不能含空字符串', () {
+      expect(
+        () => parseFastDevConfig('''
+generate:
+  fonts:
+    fallbacks:
+      - ""
+'''),
+        throwsA(
+          isA<ConfigException>().having(
+            (e) => e.message,
+            'message',
+            contains('fallbacks'),
+          ),
+        ),
+      );
+    });
+
+    test('fonts 默认值', () {
+      final fonts = parseFastDevConfig('').config.generate.fonts;
+      expect(fonts.enabled, isTrue);
+      expect(fonts.className, 'FontFamily');
+      expect(fonts.package, isFalse);
+      expect(fonts.fallbacks, isEmpty);
+    });
+
+    test('非法 fonts.class_name 抛错', () {
+      expect(
+        () => parseFastDevConfig('''
+generate:
+  fonts:
+    class_name: 123Fonts
+'''),
+        throwsA(isA<ConfigException>()),
+      );
     });
 
     test('不支持的 version 抛错', () {
@@ -144,9 +208,7 @@ generate:
     });
 
     test('variants 默认关闭', () {
-      final variants = parseFastDevConfig(
-        '',
-      ).config.generate.assets.variants;
+      final variants = parseFastDevConfig('').config.generate.assets.variants;
       expect(variants.theme.enabled, isFalse);
       expect(variants.locale.enabled, isFalse);
       expect(variants.locale.folders, isEmpty);
@@ -168,9 +230,7 @@ generate:
         folders: [zh, en, zh_CN]
         fallback: en
 ''';
-      final variants = parseFastDevConfig(
-        yaml,
-      ).config.generate.assets.variants;
+      final variants = parseFastDevConfig(yaml).config.generate.assets.variants;
       expect(variants.theme.enabled, isTrue);
       expect(variants.theme.lightFolders, ['day']);
       expect(variants.theme.darkFolders, ['night', 'dark']);
@@ -296,26 +356,6 @@ generate:
             (e) => e.message,
             'message',
             contains('light 与 dark'),
-          ),
-        ),
-      );
-    });
-
-    test('变体目录不能是密度名', () {
-      expect(
-        () => parseFastDevConfig('''
-generate:
-  assets:
-    variants:
-      locale:
-        enabled: true
-        folders: [2.0x, zh]
-'''),
-        throwsA(
-          isA<ConfigException>().having(
-            (e) => e.message,
-            'message',
-            contains('密度目录'),
           ),
         ),
       );

@@ -33,7 +33,7 @@ Future<int> runFastDev(List<String> arguments) async {
 final class FastDevCommandRunner extends CommandRunner<void> {
   /// 注册全局选项和已实现的子命令。
   FastDevCommandRunner()
-    : super('fast_dev', '根据 flutter.assets 生成类型安全的资源路径。') {
+    : super('fast_dev', '根据 flutter.assets / flutter.fonts 生成类型安全的引用。') {
     argParser.addOption(
       'config',
       abbr: 'c',

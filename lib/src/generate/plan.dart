@@ -2,12 +2,13 @@ import '../config/config.dart';
 import '../pubspec/parse.dart';
 import 'assets/expand.dart';
 import 'assets/generator.dart';
+import 'fonts/generator.dart';
 import 'generator.dart';
 
 export 'generator.dart';
 
 /// 当前版本会跑的生成器。加新能力时往这里追加，不要在 [planGenerate] 里写分支。
-const List<Generator> builtInGenerators = [AssetsGenerator()];
+const List<Generator> builtInGenerators = [AssetsGenerator(), FontsGenerator()];
 
 /// 一次生成要写出的文件、跳过项和告警。CLI 与 `build_runner` 共用。
 ///
@@ -20,7 +21,7 @@ final class GeneratePlan {
     required this.warnings,
   });
 
-  /// 相对项目根的生成文件。目前最多一份 `assets.gen.dart`。
+  /// 相对项目根的生成文件。目前是 `assets.gen.dart` / `fonts.gen.dart`。
   final List<PlannedOutput> outputs;
 
   /// 关掉或没有输入的生成器。

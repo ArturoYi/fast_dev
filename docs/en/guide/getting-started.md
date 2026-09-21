@@ -29,7 +29,11 @@ dev_dependencies:
 
 Skip `build_runner` if you only run `dart run fast_dev gen`. If the project already uses `build_runner`, adding `fast_dev` is enough.
 
-Assets still go in `pubspec.yaml`. Directories are expanded recursively, so one line is usually enough:
+Assets still go in `pubspec.yaml`. Directories are expanded recursively, so one line is usually enough.
+
+::: danger 2.0x / 3.0x are not supported
+Asset generation **does not** support Flutter density folders (`2.0x` / `3.0x`) and will not collapse them to a base path. Do not lay out multi-resolution folders. Details: [Assets](/en/features/assets).
+:::
 
 ```yaml
 flutter:
@@ -87,7 +91,7 @@ generate:
         fallback: file
 ```
 
-How to create and load the file: [Configuration](./configuration.md). Field details: [Assets](/en/features/assets#config). After you write the file:
+How to create and load the file: [Configuration](./configuration.md). Field details: [Assets](/en/features/assets#config), [Fonts](/en/features/fonts#config). After you write the file:
 
 ```sh
 dart run fast_dev config
@@ -99,7 +103,7 @@ dart run fast_dev config
 dart run fast_dev gen
 ```
 
-Default output is `lib/gen/fast_dev/assets.gen.dart`.
+Default output is `lib/gen/fast_dev/assets.gen.dart`. If `pubspec.yaml` lists `flutter.fonts`, it also writes `fonts.gen.dart`.
 
 If the project already uses `build_runner`, one watch is enough. It runs with the other builders:
 
@@ -113,14 +117,17 @@ How to sit next to them, and `build.yaml`: [build_runner](./build-runner.md).
 
 ```dart
 import 'package:your_app/gen/fast_dev/assets.gen.dart';
+import 'package:your_app/gen/fast_dev/fonts.gen.dart';
 
 Image.asset(Assets.images.logo);
 rootBundle.loadString(Assets.data.hello);
 
 // after theme / locale variants are on
 Image.asset(Assets.images.logo.of(context));
+
+Text('Hello', style: TextStyle(fontFamily: FontFamily.raleway));
 ```
 
-`AssetPath` is a `String`. `Image.asset`, `rootBundle`, and your own APIs can take it as-is.
+`AssetPath` is a `String`. `Image.asset`, `rootBundle`, and your own APIs can take it as-is. `FontFamily.raleway` is a `String` for `TextStyle.fontFamily`.
 
-A small app lives in [`example/`](https://github.com/ArturoYi/fast_dev/tree/main/example). API details: [Assets](/en/features/assets).
+A small app lives in [`example/`](https://github.com/ArturoYi/fast_dev/tree/main/example). API details: [Assets](/en/features/assets), [Fonts](/en/features/fonts).
